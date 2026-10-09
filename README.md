@@ -398,8 +398,8 @@ cd e2e-server && python3 chaos.py
 - `-Pe2e=true` compiles the library's end-to-end suite against the public API alone and runs it against the reference server; `-Pstress=true` does the same for the stress suite.
 - Device apps: build the Android app with `-PcableUrl=ws://<mac-lan-ip>:3000/cable`. For iOS, run `xcodegen generate` in `consumer-check/iosApp`, set `CABLE_URL` in `project.yml`, and run the `CableHarness` scheme. The launch argument `-pinForeground YES` turns the pin toggle on, so `xcrun simctl launch` can script the watchdog check.
 
-Releasing: bump the version in `actioncable/build.gradle.kts` and `consumer-check/settings.gradle.kts`, then push a `v<version>` tag. The release workflow runs CI, including both end-to-end matrices, and then `publishAndReleaseToMavenCentral`. It needs the secrets `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY`, `SIGNING_KEY_ID` and `SIGNING_KEY_PASSWORD`. Once the release is on Maven Central, run the workflow manually to check the published artifact with `consumer-check`.
+Releasing: bump the version in `actioncable/build.gradle.kts` and `consumer-check/settings.gradle.kts`, then push a `v<version>` tag. The release workflow runs CI, including both end-to-end matrices, and then `publishToMavenCentral`, which uploads the signed artifacts without releasing them; review the deployment at central.sonatype.com and press Publish. The workflow needs the secrets `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY`, `SIGNING_KEY_ID` and `SIGNING_KEY_PASSWORD`. Once the release is on Maven Central, run the workflow manually to check the published artifact with `consumer-check`.
 
 ## License
 
-Apache License 2.0.
+Apache License 2.0, see [LICENSE](LICENSE).
