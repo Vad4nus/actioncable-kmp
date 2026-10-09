@@ -1,0 +1,161 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <actioncable-kmp:actioncable>
+abstract fun interface io.github.vad4nus.actioncable/CableLogger { // io.github.vad4nus.actioncable/CableLogger|null[0]
+    abstract fun log(io.github.vad4nus.actioncable/CableLogger.Level, kotlin/String) // io.github.vad4nus.actioncable/CableLogger.log|log(io.github.vad4nus.actioncable.CableLogger.Level;kotlin.String){}[0]
+
+    final enum class Level : kotlin/Enum<io.github.vad4nus.actioncable/CableLogger.Level> { // io.github.vad4nus.actioncable/CableLogger.Level|null[0]
+        enum entry DEBUG // io.github.vad4nus.actioncable/CableLogger.Level.DEBUG|null[0]
+        enum entry ERROR // io.github.vad4nus.actioncable/CableLogger.Level.ERROR|null[0]
+        enum entry INFO // io.github.vad4nus.actioncable/CableLogger.Level.INFO|null[0]
+        enum entry WARN // io.github.vad4nus.actioncable/CableLogger.Level.WARN|null[0]
+
+        final val entries // io.github.vad4nus.actioncable/CableLogger.Level.entries|#static{}entries[0]
+            final fun <get-entries>(): kotlin.enums/EnumEntries<io.github.vad4nus.actioncable/CableLogger.Level> // io.github.vad4nus.actioncable/CableLogger.Level.entries.<get-entries>|<get-entries>#static(){}[0]
+
+        final fun valueOf(kotlin/String): io.github.vad4nus.actioncable/CableLogger.Level // io.github.vad4nus.actioncable/CableLogger.Level.valueOf|valueOf#static(kotlin.String){}[0]
+        final fun values(): kotlin/Array<io.github.vad4nus.actioncable/CableLogger.Level> // io.github.vad4nus.actioncable/CableLogger.Level.values|values#static(){}[0]
+    }
+
+    final object Companion { // io.github.vad4nus.actioncable/CableLogger.Companion|null[0]
+        final val None // io.github.vad4nus.actioncable/CableLogger.Companion.None|{}None[0]
+            final fun <get-None>(): io.github.vad4nus.actioncable/CableLogger // io.github.vad4nus.actioncable/CableLogger.Companion.None.<get-None>|<get-None>(){}[0]
+        final val Platform // io.github.vad4nus.actioncable/CableLogger.Companion.Platform|{}Platform[0]
+            final fun <get-Platform>(): io.github.vad4nus.actioncable/CableLogger // io.github.vad4nus.actioncable/CableLogger.Companion.Platform.<get-Platform>|<get-Platform>(){}[0]
+    }
+}
+
+abstract interface io.github.vad4nus.actioncable/ActionCableClient { // io.github.vad4nus.actioncable/ActionCableClient|null[0]
+    abstract val state // io.github.vad4nus.actioncable/ActionCableClient.state|{}state[0]
+        abstract fun <get-state>(): kotlinx.coroutines.flow/StateFlow<io.github.vad4nus.actioncable/CableState> // io.github.vad4nus.actioncable/ActionCableClient.state.<get-state>|<get-state>(){}[0]
+
+    abstract fun close() // io.github.vad4nus.actioncable/ActionCableClient.close|close(){}[0]
+    abstract fun connect() // io.github.vad4nus.actioncable/ActionCableClient.connect|connect(){}[0]
+    abstract fun disconnect() // io.github.vad4nus.actioncable/ActionCableClient.disconnect|disconnect(){}[0]
+    abstract suspend fun subscribe(kotlinx.serialization.json/JsonObject): io.github.vad4nus.actioncable/CableSubscription // io.github.vad4nus.actioncable/ActionCableClient.subscribe|subscribe(kotlinx.serialization.json.JsonObject){}[0]
+}
+
+abstract interface io.github.vad4nus.actioncable/CableSubscription { // io.github.vad4nus.actioncable/CableSubscription|null[0]
+    abstract val identifier // io.github.vad4nus.actioncable/CableSubscription.identifier|{}identifier[0]
+        abstract fun <get-identifier>(): kotlin/String // io.github.vad4nus.actioncable/CableSubscription.identifier.<get-identifier>|<get-identifier>(){}[0]
+    abstract val messages // io.github.vad4nus.actioncable/CableSubscription.messages|{}messages[0]
+        abstract fun <get-messages>(): kotlinx.coroutines.flow/Flow<kotlinx.serialization.json/JsonElement> // io.github.vad4nus.actioncable/CableSubscription.messages.<get-messages>|<get-messages>(){}[0]
+    abstract val state // io.github.vad4nus.actioncable/CableSubscription.state|{}state[0]
+        abstract fun <get-state>(): kotlinx.coroutines.flow/StateFlow<io.github.vad4nus.actioncable/SubscriptionState> // io.github.vad4nus.actioncable/CableSubscription.state.<get-state>|<get-state>(){}[0]
+
+    abstract fun unsubscribe() // io.github.vad4nus.actioncable/CableSubscription.unsubscribe|unsubscribe(){}[0]
+    abstract suspend fun perform(kotlin/String, kotlinx.serialization.json/JsonObject = ...): kotlin/Boolean // io.github.vad4nus.actioncable/CableSubscription.perform|perform(kotlin.String;kotlinx.serialization.json.JsonObject){}[0]
+}
+
+sealed interface io.github.vad4nus.actioncable/CableState { // io.github.vad4nus.actioncable/CableState|null[0]
+    final class Connecting : io.github.vad4nus.actioncable/CableState { // io.github.vad4nus.actioncable/CableState.Connecting|null[0]
+        constructor <init>(kotlin/Int) // io.github.vad4nus.actioncable/CableState.Connecting.<init>|<init>(kotlin.Int){}[0]
+
+        final val attempt // io.github.vad4nus.actioncable/CableState.Connecting.attempt|{}attempt[0]
+            final fun <get-attempt>(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Connecting.attempt.<get-attempt>|<get-attempt>(){}[0]
+
+        final fun component1(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Connecting.component1|component1(){}[0]
+        final fun copy(kotlin/Int = ...): io.github.vad4nus.actioncable/CableState.Connecting // io.github.vad4nus.actioncable/CableState.Connecting.copy|copy(kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/CableState.Connecting.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Connecting.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/CableState.Connecting.toString|toString(){}[0]
+    }
+
+    final class Stopped : io.github.vad4nus.actioncable/CableState { // io.github.vad4nus.actioncable/CableState.Stopped|null[0]
+        constructor <init>(kotlin/String?) // io.github.vad4nus.actioncable/CableState.Stopped.<init>|<init>(kotlin.String?){}[0]
+
+        final val reason // io.github.vad4nus.actioncable/CableState.Stopped.reason|{}reason[0]
+            final fun <get-reason>(): kotlin/String? // io.github.vad4nus.actioncable/CableState.Stopped.reason.<get-reason>|<get-reason>(){}[0]
+
+        final fun component1(): kotlin/String? // io.github.vad4nus.actioncable/CableState.Stopped.component1|component1(){}[0]
+        final fun copy(kotlin/String? = ...): io.github.vad4nus.actioncable/CableState.Stopped // io.github.vad4nus.actioncable/CableState.Stopped.copy|copy(kotlin.String?){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/CableState.Stopped.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Stopped.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/CableState.Stopped.toString|toString(){}[0]
+    }
+
+    final object Closed : io.github.vad4nus.actioncable/CableState { // io.github.vad4nus.actioncable/CableState.Closed|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/CableState.Closed.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Closed.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/CableState.Closed.toString|toString(){}[0]
+    }
+
+    final object Connected : io.github.vad4nus.actioncable/CableState { // io.github.vad4nus.actioncable/CableState.Connected|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/CableState.Connected.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Connected.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/CableState.Connected.toString|toString(){}[0]
+    }
+
+    final object Disconnected : io.github.vad4nus.actioncable/CableState { // io.github.vad4nus.actioncable/CableState.Disconnected|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/CableState.Disconnected.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/CableState.Disconnected.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/CableState.Disconnected.toString|toString(){}[0]
+    }
+}
+
+sealed interface io.github.vad4nus.actioncable/SubscriptionState { // io.github.vad4nus.actioncable/SubscriptionState|null[0]
+    final class Subscribed : io.github.vad4nus.actioncable/SubscriptionState { // io.github.vad4nus.actioncable/SubscriptionState.Subscribed|null[0]
+        constructor <init>(kotlin/Int) // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.<init>|<init>(kotlin.Int){}[0]
+
+        final val confirmations // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.confirmations|{}confirmations[0]
+            final fun <get-confirmations>(): kotlin/Int // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.confirmations.<get-confirmations>|<get-confirmations>(){}[0]
+
+        final fun component1(): kotlin/Int // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.component1|component1(){}[0]
+        final fun copy(kotlin/Int = ...): io.github.vad4nus.actioncable/SubscriptionState.Subscribed // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.copy|copy(kotlin.Int){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/SubscriptionState.Subscribed.toString|toString(){}[0]
+    }
+
+    final object Pending : io.github.vad4nus.actioncable/SubscriptionState { // io.github.vad4nus.actioncable/SubscriptionState.Pending|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/SubscriptionState.Pending.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/SubscriptionState.Pending.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/SubscriptionState.Pending.toString|toString(){}[0]
+    }
+
+    final object Rejected : io.github.vad4nus.actioncable/SubscriptionState { // io.github.vad4nus.actioncable/SubscriptionState.Rejected|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/SubscriptionState.Rejected.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/SubscriptionState.Rejected.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/SubscriptionState.Rejected.toString|toString(){}[0]
+    }
+
+    final object Unsubscribed : io.github.vad4nus.actioncable/SubscriptionState { // io.github.vad4nus.actioncable/SubscriptionState.Unsubscribed|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.vad4nus.actioncable/SubscriptionState.Unsubscribed.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.vad4nus.actioncable/SubscriptionState.Unsubscribed.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.vad4nus.actioncable/SubscriptionState.Unsubscribed.toString|toString(){}[0]
+    }
+}
+
+final class io.github.vad4nus.actioncable/CableOptions { // io.github.vad4nus.actioncable/CableOptions|null[0]
+    constructor <init>() // io.github.vad4nus.actioncable/CableOptions.<init>|<init>(){}[0]
+
+    final var maxReconnectAttempts // io.github.vad4nus.actioncable/CableOptions.maxReconnectAttempts|{}maxReconnectAttempts[0]
+        final fun <get-maxReconnectAttempts>(): kotlin/Int // io.github.vad4nus.actioncable/CableOptions.maxReconnectAttempts.<get-maxReconnectAttempts>|<get-maxReconnectAttempts>(){}[0]
+        final fun <set-maxReconnectAttempts>(kotlin/Int) // io.github.vad4nus.actioncable/CableOptions.maxReconnectAttempts.<set-maxReconnectAttempts>|<set-maxReconnectAttempts>(kotlin.Int){}[0]
+    final var maxReconnectDelay // io.github.vad4nus.actioncable/CableOptions.maxReconnectDelay|{}maxReconnectDelay[0]
+        final fun <get-maxReconnectDelay>(): kotlin.time/Duration // io.github.vad4nus.actioncable/CableOptions.maxReconnectDelay.<get-maxReconnectDelay>|<get-maxReconnectDelay>(){}[0]
+        final fun <set-maxReconnectDelay>(kotlin.time/Duration) // io.github.vad4nus.actioncable/CableOptions.maxReconnectDelay.<set-maxReconnectDelay>|<set-maxReconnectDelay>(kotlin.time.Duration){}[0]
+    final var messageBufferSize // io.github.vad4nus.actioncable/CableOptions.messageBufferSize|{}messageBufferSize[0]
+        final fun <get-messageBufferSize>(): kotlin/Int // io.github.vad4nus.actioncable/CableOptions.messageBufferSize.<get-messageBufferSize>|<get-messageBufferSize>(){}[0]
+        final fun <set-messageBufferSize>(kotlin/Int) // io.github.vad4nus.actioncable/CableOptions.messageBufferSize.<set-messageBufferSize>|<set-messageBufferSize>(kotlin.Int){}[0]
+    final var minReconnectDelay // io.github.vad4nus.actioncable/CableOptions.minReconnectDelay|{}minReconnectDelay[0]
+        final fun <get-minReconnectDelay>(): kotlin.time/Duration // io.github.vad4nus.actioncable/CableOptions.minReconnectDelay.<get-minReconnectDelay>|<get-minReconnectDelay>(){}[0]
+        final fun <set-minReconnectDelay>(kotlin.time/Duration) // io.github.vad4nus.actioncable/CableOptions.minReconnectDelay.<set-minReconnectDelay>|<set-minReconnectDelay>(kotlin.time.Duration){}[0]
+    final var staleTimeout // io.github.vad4nus.actioncable/CableOptions.staleTimeout|{}staleTimeout[0]
+        final fun <get-staleTimeout>(): kotlin.time/Duration // io.github.vad4nus.actioncable/CableOptions.staleTimeout.<get-staleTimeout>|<get-staleTimeout>(){}[0]
+        final fun <set-staleTimeout>(kotlin.time/Duration) // io.github.vad4nus.actioncable/CableOptions.staleTimeout.<set-staleTimeout>|<set-staleTimeout>(kotlin.time.Duration){}[0]
+}
+
+final object io.github.vad4nus.actioncable/CableLog { // io.github.vad4nus.actioncable/CableLog|null[0]
+    final var logger // io.github.vad4nus.actioncable/CableLog.logger|{}logger[0]
+        final fun <get-logger>(): io.github.vad4nus.actioncable/CableLogger // io.github.vad4nus.actioncable/CableLog.logger.<get-logger>|<get-logger>(){}[0]
+        final fun <set-logger>(io.github.vad4nus.actioncable/CableLogger) // io.github.vad4nus.actioncable/CableLog.logger.<set-logger>|<set-logger>(io.github.vad4nus.actioncable.CableLogger){}[0]
+}
+
+final fun <#A: io.ktor.client.engine/HttpClientEngineConfig> io.github.vad4nus.actioncable/ActionCableClient(kotlin/String, io.ktor.client.engine/HttpClientEngineFactory<#A>, kotlin.coroutines/SuspendFunction1<io.ktor.client.request/HttpRequestBuilder, kotlin/Unit> = ..., kotlin.coroutines/SuspendFunction0<kotlin/Boolean> = ..., kotlinx.coroutines.flow/Flow<kotlin/Boolean> = ..., kotlin/Function1<io.github.vad4nus.actioncable/CableOptions, kotlin/Unit> = ..., kotlin/Function1<io.ktor.client/HttpClientConfig<#A>, kotlin/Unit> = ...): io.github.vad4nus.actioncable/ActionCableClient // io.github.vad4nus.actioncable/ActionCableClient|ActionCableClient(kotlin.String;io.ktor.client.engine.HttpClientEngineFactory<0:0>;kotlin.coroutines.SuspendFunction1<io.ktor.client.request.HttpRequestBuilder,kotlin.Unit>;kotlin.coroutines.SuspendFunction0<kotlin.Boolean>;kotlinx.coroutines.flow.Flow<kotlin.Boolean>;kotlin.Function1<io.github.vad4nus.actioncable.CableOptions,kotlin.Unit>;kotlin.Function1<io.ktor.client.HttpClientConfig<0:0>,kotlin.Unit>){0§<io.ktor.client.engine.HttpClientEngineConfig>}[0]
+final fun io.github.vad4nus.actioncable/ActionCableClient(kotlin/String, kotlin.coroutines/SuspendFunction1<io.ktor.client.request/HttpRequestBuilder, kotlin/Unit> = ..., kotlin.coroutines/SuspendFunction0<kotlin/Boolean> = ..., kotlinx.coroutines.flow/Flow<kotlin/Boolean> = ..., kotlin/Function1<io.github.vad4nus.actioncable/CableOptions, kotlin/Unit> = ..., kotlin/Function1<io.ktor.client/HttpClientConfig<*>, kotlin/Unit> = ...): io.github.vad4nus.actioncable/ActionCableClient // io.github.vad4nus.actioncable/ActionCableClient|ActionCableClient(kotlin.String;kotlin.coroutines.SuspendFunction1<io.ktor.client.request.HttpRequestBuilder,kotlin.Unit>;kotlin.coroutines.SuspendFunction0<kotlin.Boolean>;kotlinx.coroutines.flow.Flow<kotlin.Boolean>;kotlin.Function1<io.github.vad4nus.actioncable.CableOptions,kotlin.Unit>;kotlin.Function1<io.ktor.client.HttpClientConfig<*>,kotlin.Unit>){}[0]

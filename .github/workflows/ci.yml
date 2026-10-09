@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_call:
+
+jobs:
+  unit-tests:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compile iOS targets
+        run: ./gradlew :actioncable:compileKotlinIosArm64 :actioncable:compileKotlinIosX64 :actioncable:compileKotlinIosSimulatorArm64
+
+      - name: Run Android host tests
+        run: ./gradlew :actioncable:testAndroidHostTest
+
+      - name: Run iOS simulator tests
+        run: ./gradlew :actioncable:iosSimulatorArm64Test
+
+      - name: Check ABI
+        run: ./gradlew apiCheck
+
+  e2e:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+          working-directory: e2e-server
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Start e2e-server
+        working-directory: e2e-server
+        run: |
+          bundle exec rails server -p 3000 -b 0.0.0.0 &
+          for i in $(seq 1 30); do
+            curl -s http://localhost:3000/control/connections && break || sleep 1
+          done
+
+      - name: Run Android host E2E tests
+        run: ./gradlew :actioncable:testAndroidHostTest -Pe2e=true
+
+      - name: Run iOS simulator E2E tests
+        run: ./gradlew :actioncable:iosSimulatorArm64Test -Pe2e=true
+
+  consumer-e2e:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+          working-directory: e2e-server
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Publish library to mavenLocal
+        run: ./gradlew :actioncable:publishToMavenLocal
+
+      - name: Start e2e-server
+        working-directory: e2e-server
+        run: |
+          bundle exec rails server -p 3000 -b 0.0.0.0 &
+          for i in $(seq 1 30); do
+            curl -s http://localhost:3000/control/connections && break || sleep 1
+          done
+
+      - name: Run consumer-check host tests (latest matrix)
+        run: ./gradlew -p consumer-check -Pmatrix=latest -Pe2e=true :shared:testAndroidHostTest :legacy:test
+
+      - name: Run consumer-check iOS simulator tests (latest matrix)
+        run: ./gradlew -p consumer-check -Pmatrix=latest -Pe2e=true :shared:iosSimulatorArm64Test

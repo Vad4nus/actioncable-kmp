@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+jobs:
+  ci:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: ci
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Publish to Maven Central
+        run: ./gradlew publishAndReleaseToMavenCentral
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+  consumer-check-central:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: macos-15
+    strategy:
+      matrix:
+        include:
+          - kmp: floor
+            xcode: '16.4'
+          - kmp: latest
+            xcode: '26.3'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Wait for the artifact on Maven Central
+        run: |
+          version=$(grep -o 'actioncable-kmp:[0-9][^"]*' consumer-check/settings.gradle.kts | cut -d: -f2)
+          url="https://repo1.maven.org/maven2/io/github/vad4nus/actioncable-kmp/$version/actioncable-kmp-$version.module"
+          for i in $(seq 1 60); do
+            curl -sfI "$url" > /dev/null && exit 0
+            sleep 60
+          done
+          echo "$url is not available" >&2
+          exit 1
+
+      - name: Build and test consumer-check against Maven Central
+        run: ./gradlew -p consumer-check -PuseCentral -Pmatrix=${{ matrix.kmp }} :shared:linkDebugFrameworkIosSimulatorArm64 :shared:testAndroidHostTest :shared:iosSimulatorArm64Test :androidApp:assembleDebug :legacy:test
