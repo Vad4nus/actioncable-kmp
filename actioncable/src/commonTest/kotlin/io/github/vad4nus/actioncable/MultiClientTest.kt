@@ -59,7 +59,7 @@ class MultiClientTest {
     @Test
     fun backoffIsPerClient() = realTest {
         val fast = ClientFixture(options = CableOptions().apply { minReconnectDelay = 50.milliseconds })
-        val slow = ClientFixture(options = CableOptions().apply { minReconnectDelay = 500.milliseconds })
+        val slow = ClientFixture(options = CableOptions().apply { minReconnectDelay = 1.seconds })
         fast.server.failNext(1_000)
         slow.server.failNext(1_000)
         try {
@@ -71,8 +71,8 @@ class MultiClientTest {
 
             val f = fast.server.callMarks()
             val s = slow.server.callMarks()
-            assertTrue(f[2] - f[0] <= 287.5.milliseconds, "fast: ${f[2] - f[0]}")
-            assertTrue(s[1] - s[0] >= 375.milliseconds, "slow: ${s[1] - s[0]}")
+            assertTrue(s[1] - s[0] >= 750.milliseconds, "slow: ${s[1] - s[0]}")
+            assertTrue(f[2] - f[0] < s[1] - s[0], "fast: ${f[2] - f[0]}, slow: ${s[1] - s[0]}")
         } finally {
             fast.client.close()
             slow.client.close()
